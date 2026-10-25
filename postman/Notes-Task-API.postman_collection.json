@@ -1,0 +1,60 @@
+{
+  "info": {
+    "name": "SapphireIQ Notes/Task API",
+    "description": "CRUD, validation, filtering, sorting and pagination for the Notes/Task API.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5000" },
+    { "key": "taskId", "value": "PASTE_TASK_ID_HERE" }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "request": { "method": "GET", "url": "{{baseUrl}}/health" }
+    },
+    {
+      "name": "Create task",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"title\": \"Finish API project\",\n  \"description\": \"Test CRUD and query features\",\n  \"completed\": false,\n  \"priority\": \"high\",\n  \"dueDate\": \"2026-11-10T00:00:00.000Z\",\n  \"tags\": [\"college\", \"backend\"]\n}" },
+        "url": "{{baseUrl}}/api/tasks"
+      }
+    },
+    {
+      "name": "List tasks",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/tasks?page=1&limit=10&sortBy=createdAt&sortOrder=desc" }
+    },
+    {
+      "name": "Filter tasks",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/tasks?completed=false&priority=high&tag=backend&search=API&page=1&limit=10&sortBy=createdAt&sortOrder=desc" }
+    },
+    {
+      "name": "Get one task",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/tasks/{{taskId}}" }
+    },
+    {
+      "name": "Update task",
+      "request": {
+        "method": "PATCH",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"completed\": true,\n  \"description\": \"Completed\"\n}" },
+        "url": "{{baseUrl}}/api/tasks/{{taskId}}"
+      }
+    },
+    {
+      "name": "Delete task",
+      "request": { "method": "DELETE", "url": "{{baseUrl}}/api/tasks/{{taskId}}" }
+    },
+    {
+      "name": "Validation check - missing title",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"description\": \"This should fail because title is missing\"\n}" },
+        "url": "{{baseUrl}}/api/tasks"
+      }
+    }
+  ]
+}
